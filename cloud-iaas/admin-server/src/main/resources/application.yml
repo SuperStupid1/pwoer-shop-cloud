@@ -1,0 +1,17 @@
+server:
+  port: ${PORT:10010}
+spring:
+  application:
+    name: admin-server
+  cloud:
+    nacos:
+      discovery:
+        namespace: b3da1d6d-0002-4d9b-b167-c284b5537e6e
+        username: nacos
+        password: nacos
+        server-addr: localhost:8848
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*' # 暴露健康检查的端点

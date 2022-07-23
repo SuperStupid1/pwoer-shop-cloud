@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mapper.ProdTagReferenceMapper">
+  <resultMap id="BaseResultMap" type="com.powernode.domain.ProdTagReference">
+    <!--@mbg.generated-->
+    <!--@Table prod_tag_reference-->
+    <id column="reference_id" property="referenceId" />
+    <result column="shop_id" property="shopId" />
+    <result column="tag_id" property="tagId" />
+    <result column="prod_id" property="prodId" />
+    <result column="status" property="status" />
+    <result column="create_time" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    reference_id, shop_id, tag_id, prod_id, `status`, create_time
+  </sql>
+</mapper>

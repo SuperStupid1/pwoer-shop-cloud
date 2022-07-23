@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mapper.SysMenuMapper">
+  <resultMap id="BaseResultMap" type="com.powernode.domain.SysMenu">
+    <!--@mbg.generated-->
+    <!--@Table sys_menu-->
+    <id column="menu_id" property="menuId" />
+    <result column="parent_id" property="parentId" />
+    <result column="name" property="name" />
+    <result column="url" property="url" />
+    <result column="perms" property="perms" />
+    <result column="type" property="type" />
+    <result column="icon" property="icon" />
+    <result column="order_num" property="orderNum" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    menu_id, parent_id, `name`, url, perms, `type`, icon, order_num
+  </sql>
+  <select id="selectMenuById" resultMap="BaseResultMap">
+  select t1.menu_id, parent_id, name, url, perms, type, icon, order_num
+from sys_menu t1
+         join sys_role_menu t2 on t1.menu_id = t2.menu_id
+         join sys_user_role t3 on t2.role_id = t3.role_id
+where t3.user_id = #{userId} and t1.type in (0, 1) order by t1.order_num
+</select>
+</mapper>

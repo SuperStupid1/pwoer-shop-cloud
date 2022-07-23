@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mapper.ProdTagMapper">
+  <resultMap id="BaseResultMap" type="com.powernode.domain.ProdTag">
+    <!--@mbg.generated-->
+    <!--@Table prod_tag-->
+    <id column="id" property="id" />
+    <result column="title" property="title" />
+    <result column="shop_id" property="shopId" />
+    <result column="status" property="status" />
+    <result column="is_default" property="isDefault" />
+    <result column="prod_count" property="prodCount" />
+    <result column="style" property="style" />
+    <result column="seq" property="seq" />
+    <result column="create_time" property="createTime" />
+    <result column="update_time" property="updateTime" />
+    <result column="delete_time" property="deleteTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, title, shop_id, `status`, is_default, prod_count, `style`, seq, create_time, 
+    update_time, delete_time
+  </sql>
+</mapper>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mapper.ProdPropValueMapper">
+  <resultMap id="BaseResultMap" type="com.powernode.domain.ProdPropValue">
+    <!--@mbg.generated-->
+    <!--@Table prod_prop_value-->
+    <id column="value_id" property="valueId" />
+    <result column="prop_value" property="propValue" />
+    <result column="prop_id" property="propId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    value_id, prop_value, prop_id
+  </sql>
+</mapper>

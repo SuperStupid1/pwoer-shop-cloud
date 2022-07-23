@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mapper.ProdCommMapper">
+  <resultMap id="BaseResultMap" type="com.powernode.domain.ProdComm">
+    <!--@mbg.generated-->
+    <!--@Table prod_comm-->
+    <id column="prod_comm_id" property="prodCommId" />
+    <result column="prod_id" property="prodId" />
+    <result column="order_item_id" property="orderItemId" />
+    <result column="user_id" property="userId" />
+    <result column="content" property="content" />
+    <result column="reply_content" property="replyContent" />
+    <result column="rec_time" property="recTime" />
+    <result column="reply_time" property="replyTime" />
+    <result column="reply_sts" property="replySts" />
+    <result column="postip" property="postip" />
+    <result column="score" property="score" />
+    <result column="useful_counts" property="usefulCounts" />
+    <result column="pics" property="pics" />
+    <result column="is_anonymous" property="isAnonymous" />
+    <result column="status" property="status" />
+    <result column="evaluate" property="evaluate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    prod_comm_id, prod_id, order_item_id, user_id, content, reply_content, rec_time, 
+    reply_time, reply_sts, postip, score, useful_counts, pics, is_anonymous, `status`, 
+    evaluate
+  </sql>
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mapper.SkuMapper">
+  <resultMap id="BaseResultMap" type="com.powernode.domain.Sku">
+    <!--@mbg.generated-->
+    <!--@Table sku-->
+    <id column="sku_id" property="skuId" />
+    <result column="prod_id" property="prodId" />
+    <result column="properties" property="properties" />
+    <result column="ori_price" property="oriPrice" />
+    <result column="price" property="price" />
+    <result column="stocks" property="stocks" />
+    <result column="actual_stocks" property="actualStocks" />
+    <result column="update_time" property="updateTime" />
+    <result column="rec_time" property="recTime" />
+    <result column="party_code" property="partyCode" />
+    <result column="model_id" property="modelId" />
+    <result column="pic" property="pic" />
+    <result column="sku_name" property="skuName" />
+    <result column="prod_name" property="prodName" />
+    <result column="version" property="version" />
+    <result column="weight" property="weight" />
+    <result column="volume" property="volume" />
+    <result column="status" property="status" />
+    <result column="is_delete" property="isDelete" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    sku_id, prod_id, properties, ori_price, price, stocks, actual_stocks, update_time, 
+    rec_time, party_code, model_id, pic, sku_name, prod_name, version, weight, volume, 
+    `status`, is_delete
+  </sql>
+</mapper>

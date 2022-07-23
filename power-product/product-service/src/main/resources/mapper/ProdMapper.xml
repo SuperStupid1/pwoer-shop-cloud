@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mapper.ProdMapper">
+  <resultMap id="BaseResultMap" type="com.powernode.domain.Prod">
+    <!--@mbg.generated-->
+    <!--@Table prod-->
+    <id column="prod_id" property="prodId" />
+    <result column="prod_name" property="prodName" />
+    <result column="shop_id" property="shopId" />
+    <result column="ori_price" property="oriPrice" />
+    <result column="price" property="price" />
+    <result column="brief" property="brief" />
+    <result column="content" property="content" />
+    <result column="pic" property="pic" />
+    <result column="imgs" property="imgs" />
+    <result column="status" property="status" />
+    <result column="category_id" property="categoryId" />
+    <result column="sold_num" property="soldNum" />
+    <result column="total_stocks" property="totalStocks" />
+    <result column="delivery_mode" property="deliveryMode" />
+    <result column="delivery_template_id" property="deliveryTemplateId" />
+    <result column="create_time" property="createTime" />
+    <result column="update_time" property="updateTime" />
+    <result column="putaway_time" property="putawayTime" />
+    <result column="version" property="version" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    prod_id, prod_name, shop_id, ori_price, price, brief, content, pic, imgs, `status`, 
+    category_id, sold_num, total_stocks, delivery_mode, delivery_template_id, create_time, 
+    update_time, putaway_time, version
+  </sql>
+</mapper>
