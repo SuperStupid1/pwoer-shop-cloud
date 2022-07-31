@@ -179,6 +179,14 @@ public class Prod implements Serializable {
     @ApiModelProperty(value = "配送方式")
     private DeliveryModeVo deliveryModeVo;
 
+    @TableField(exist = false)
+    @ApiModelProperty("商品的好评数")
+    private Long praiseNumber = 0L;
+
+    @TableField(exist = false)
+    @ApiModelProperty("商品的好评率")
+    private BigDecimal positiveRating = BigDecimal.ZERO;
+
     private static final long serialVersionUID = 1L;
 
     public static final String COL_PROD_ID = "prod_id";
