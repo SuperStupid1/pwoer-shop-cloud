@@ -1,5 +1,7 @@
 package com.powernode.service;
 
+import org.springframework.stereotype.Service;
+
 /**
  * 信息描述
  *

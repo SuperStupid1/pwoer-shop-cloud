@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mapper.HotSearchMapper">
+  <resultMap id="BaseResultMap" type="com.powernode.domain.HotSearch">
+    <!--@mbg.generated-->
+    <!--@Table hot_search-->
+    <id column="hot_search_id" property="hotSearchId" />
+    <result column="shop_id" property="shopId" />
+    <result column="content" property="content" />
+    <result column="rec_date" property="recDate" />
+    <result column="seq" property="seq" />
+    <result column="status" property="status" />
+    <result column="title" property="title" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    hot_search_id, shop_id, content, rec_date, seq, `status`, title
+  </sql>
+</mapper>

@@ -93,6 +93,7 @@ public class ProdServiceImpl extends ServiceImpl<ProdMapper, Prod> implements Pr
         log.info("新增商品{}", JSON.toJSONString(prod));
         prod.setShopId(1L);
         prod.setCreateTime(LocalDateTime.now());
+        prod.setUpdateTime(LocalDateTime.now());
         prod.setVersion(1);
         if (prod.getStatus().equals(1)) {
             prod.setPutawayTime(LocalDateTime.now());

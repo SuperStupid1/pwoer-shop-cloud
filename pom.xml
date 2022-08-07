@@ -13,6 +13,10 @@
         <module>power-common</module>
         <module>power-manager</module>
         <module>power-product</module>
+        <module>power-store</module>
+        <module>power-member</module>
+        <module>power-search</module>
+        <module>power-cart</module>
     </modules>
 
     <!-- 最外面的父项目是boot -->

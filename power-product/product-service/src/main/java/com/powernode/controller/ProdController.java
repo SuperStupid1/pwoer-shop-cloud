@@ -42,5 +42,20 @@ public class ProdController {
         return ResponseEntity.ok().build();
     }
 
+    /*===============================小程序接口=========================================*/
+
+    @GetMapping("getProdById")
+    @ApiOperation("根据商品id查询商品")
+    public Prod getProdById(@RequestParam Long prodId){
+        return prodService.getById(prodId);
+    }
+
+    @GetMapping("/prod/prodInfo")
+    @ApiOperation("根据商品id查询商品")
+    public ResponseEntity<Prod> getProdInfo(Long prodId){
+        Prod prod = prodService.getById(prodId);
+        return ResponseEntity.ok(prod);
+    }
+
 
 }

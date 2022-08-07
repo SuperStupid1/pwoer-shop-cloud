@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mapper.NoticeMapper">
+  <resultMap id="BaseResultMap" type="com.powernode.domain.Notice">
+    <!--@mbg.generated-->
+    <!--@Table notice-->
+    <id column="id" property="id" />
+    <result column="shop_id" property="shopId" />
+    <result column="title" property="title" />
+    <result column="content" property="content" />
+    <result column="status" property="status" />
+    <result column="is_top" property="isTop" />
+    <result column="publish_time" property="publishTime" />
+    <result column="update_time" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    id, shop_id, title, content, `status`, is_top, publish_time, update_time
+  </sql>
+</mapper>

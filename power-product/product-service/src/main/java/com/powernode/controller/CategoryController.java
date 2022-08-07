@@ -51,6 +51,7 @@ public class CategoryController {
     @ApiOperation("新增产品分类")
     public ResponseEntity<Void> addCategory(@RequestBody Category category){
         category.setRecTime(LocalDateTime.now());
+        category.setUpdateTime(LocalDateTime.now());
         category.setStatus(1);
         category.setShopId(1L);
         categoryService.save(category);

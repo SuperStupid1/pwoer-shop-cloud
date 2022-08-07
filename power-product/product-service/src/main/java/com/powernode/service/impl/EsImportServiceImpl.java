@@ -1,15 +1,22 @@
 package com.powernode.service.impl;
 
 import cn.hutool.core.bean.BeanUtil;
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.powernode.constant.QueueConstant;
 import com.powernode.dao.ProdEsDao;
+import com.powernode.domain.EsChange;
 import com.powernode.domain.Prod;
 import com.powernode.domain.ProdEs;
 import com.powernode.service.EsImportService;
 import com.powernode.service.ProdService;
 import com.powernode.util.ProductThreadPool;
+import com.rabbitmq.client.Channel;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.security.Escape;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
@@ -17,10 +24,13 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.stream.Collectors;
 
 /**
  * 导入到es
@@ -80,7 +90,7 @@ public class EsImportServiceImpl implements EsImportService, ApplicationRunner {
         for (int i = 1; i <= pages; i++) {
             final int current = i;
             // 多线程执行
-            ProductThreadPool.poolExecutor.execute(()->{
+            ProductThreadPool.poolExecutor.execute(() -> {
                 import2Es(current, size, null, null);
                 // 计数器--
                 downLatch.countDown();
@@ -99,6 +109,7 @@ public class EsImportServiceImpl implements EsImportService, ApplicationRunner {
 
     /**
      * 查询并且导入的方法
+     *
      * @param current
      * @param size
      * @param start
@@ -152,10 +163,68 @@ public class EsImportServiceImpl implements EsImportService, ApplicationRunner {
         start = end;
     }
 
+
     @Override
     public void quickImport() {
 
     }
+
+    /**
+     * 使用mq监听的方式去完成快速导入
+     * 用户下单 es中库存的扣减
+     * 我们和生产者约定好 一个参数
+     * prodId 18 count + - 2   使用正负号来复用方法
+     * 用户没有支付？ 库存要加回来
+     * Map<prodId,count>
+     * 18  -2
+     * 19  -1
+     * 20  -2
+     * java强语言类型 尽量使用对象来接受和传递参数
+     * List<EsChange>
+     *
+     * @param message
+     * @param channel
+     */
+
+//    @RabbitListener(queues = QueueConstant.ES_CHANGE_QUEUE, concurrency = "3-5")
+    public void handlerProduceEs(Message message, Channel channel) {
+        // 获取消息
+        String megStr = new String(message.getBody());
+        List<EsChange> esChanges = JSON.parseArray(megStr, EsChange.class);
+        // 获取商品id列表
+        List<Long> ids = esChanges.stream()
+                .map(EsChange::getProdId)
+                .collect(Collectors.toList());
+        // 统一查询es
+        Iterable<ProdEs> prodEsIterable = prodEsDao.findAllById(ids);
+        // 循环修改库存
+        prodEsIterable.forEach(prodEs -> {
+            EsChange esChange1 = esChanges.stream()
+                    .filter(esChange -> esChange.getProdId().equals(prodEs.getProdId()))
+                    .collect(Collectors.toList())
+                    .get(0);
+            long finalCount = prodEs.getTotalStocks() + esChange1.getCount();
+            if (finalCount < 0) {
+                log.error("商品{}的库存不足", prodEs.getProdName());
+                throw new IllegalArgumentException("商品库存不足");
+            }
+            // 修改销量和库存
+            prodEs.setTotalStocks(finalCount);
+            prodEs.setSoldNum(prodEs.getSoldNum() - esChange1.getCount());
+        });
+
+        // 统一保存修改
+        prodEsDao.saveAll(prodEsIterable);
+
+        // 签收消息
+        try {
+            channel.basicAck(message.getMessageProperties().getDeliveryTag(), false);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     /**
      * 当springApplication启动以后

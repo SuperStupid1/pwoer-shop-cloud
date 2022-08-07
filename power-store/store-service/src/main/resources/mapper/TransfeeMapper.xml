@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mapper.TransfeeMapper">
+  <resultMap id="BaseResultMap" type="com.powernode.domain.Transfee">
+    <!--@mbg.generated-->
+    <!--@Table transfee-->
+    <id column="transfee_id" property="transfeeId" />
+    <result column="transport_id" property="transportId" />
+    <result column="continuous_piece" property="continuousPiece" />
+    <result column="first_piece" property="firstPiece" />
+    <result column="continuous_fee" property="continuousFee" />
+    <result column="first_fee" property="firstFee" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    transfee_id, transport_id, continuous_piece, first_piece, continuous_fee, first_fee
+  </sql>
+</mapper>

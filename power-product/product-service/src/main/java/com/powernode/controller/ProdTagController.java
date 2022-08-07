@@ -54,5 +54,13 @@ public class ProdTagController {
         return ResponseEntity.ok(list);
     }
 
+    /*===============================小程序接口==============================================*/
+
+    @GetMapping("prodTagList")
+    @ApiOperation("小程序加载商品标签")
+    public List<ProdTag> appletLoadProdTag(){
+        return prodTagService.list();
+    }
+
 
 }

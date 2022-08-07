@@ -4,14 +4,19 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nonapi.io.github.classgraph.json.Id;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
+
 import java.math.BigDecimal;
 import java.util.List;
 
+/**
+ * @author 杜波
+ * @createDate 2022/7/31 13:14
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

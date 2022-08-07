@@ -26,7 +26,7 @@ public interface GatewayConstant {
     /**
      * 需要放行的路径集合
      */
-    List<String> ALLOW_URLS = Arrays.asList("/oauth/token");
+    List<String> ALLOW_URLS = Arrays.asList("/oauth/token","swagger-ui.html");
 
     /**
      * 请求头中token信息的前缀

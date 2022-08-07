@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: store-service
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+  cloud:
+    nacos:
+      config:
+        group: DEFAULT_GROUP
+        server-addr: localhost:8848
+        namespace: b3da1d6d-0002-4d9b-b167-c284b5537e6e
+        prefix: config-store
+        file-extension: yml
+      server-addr: localhost:8848
+      password: nacos
+      username: nacos
+      discovery:
+        namespace: b3da1d6d-0002-4d9b-b167-c284b5537e6e
+  profiles:
+    active: dev

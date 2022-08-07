@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mapper.TranscityFreeMapper">
+  <resultMap id="BaseResultMap" type="com.powernode.domain.TranscityFree">
+    <!--@mbg.generated-->
+    <!--@Table transcity_free-->
+    <id column="transcity_free_id" property="transcityFreeId" />
+    <result column="transfee_free_id" property="transfeeFreeId" />
+    <result column="free_city_id" property="freeCityId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    transcity_free_id, transfee_free_id, free_city_id
+  </sql>
+</mapper>

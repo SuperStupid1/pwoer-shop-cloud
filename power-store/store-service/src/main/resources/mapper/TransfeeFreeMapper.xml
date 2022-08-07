@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mapper.TransfeeFreeMapper">
+  <resultMap id="BaseResultMap" type="com.powernode.domain.TransfeeFree">
+    <!--@mbg.generated-->
+    <!--@Table transfee_free-->
+    <id column="transfee_free_id" property="transfeeFreeId" />
+    <result column="transport_id" property="transportId" />
+    <result column="free_type" property="freeType" />
+    <result column="amount" property="amount" />
+    <result column="piece" property="piece" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    transfee_free_id, transport_id, free_type, amount, piece
+  </sql>
+</mapper>

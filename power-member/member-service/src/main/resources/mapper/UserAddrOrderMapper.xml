@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mapper.UserAddrOrderMapper">
+  <resultMap id="BaseResultMap" type="com.powernode.domain.UserAddrOrder">
+    <!--@mbg.generated-->
+    <!--@Table user_addr_order-->
+    <id column="addr_order_id" property="addrOrderId" />
+    <result column="addr_id" property="addrId" />
+    <result column="user_id" property="userId" />
+    <result column="receiver" property="receiver" />
+    <result column="province_id" property="provinceId" />
+    <result column="province" property="province" />
+    <result column="area_id" property="areaId" />
+    <result column="area" property="area" />
+    <result column="city_id" property="cityId" />
+    <result column="city" property="city" />
+    <result column="addr" property="addr" />
+    <result column="post_code" property="postCode" />
+    <result column="mobile" property="mobile" />
+    <result column="create_time" property="createTime" />
+    <result column="version" property="version" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    addr_order_id, addr_id, user_id, receiver, province_id, province, area_id, area, 
+    city_id, city, addr, post_code, mobile, create_time, version
+  </sql>
+</mapper>

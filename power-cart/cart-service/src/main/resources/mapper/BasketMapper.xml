@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mapper.BasketMapper">
+  <resultMap id="BaseResultMap" type="com.powernode.domain.Basket">
+    <!--@mbg.generated-->
+    <!--@Table basket-->
+    <id column="basket_id" property="basketId" />
+    <result column="shop_id" property="shopId" />
+    <result column="prod_id" property="prodId" />
+    <result column="sku_id" property="skuId" />
+    <result column="user_id" property="userId" />
+    <result column="basket_count" property="basketCount" />
+    <result column="basket_date" property="basketDate" />
+    <result column="discount_id" property="discountId" />
+    <result column="distribution_card_no" property="distributionCardNo" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    basket_id, shop_id, prod_id, sku_id, user_id, basket_count, basket_date, discount_id, 
+    distribution_card_no
+  </sql>
+</mapper>

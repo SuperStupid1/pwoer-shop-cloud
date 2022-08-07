@@ -1,11 +1,10 @@
 package com.powernode.interceptor;
 
-import com.powernode.constant.CommonConstant;
+import com.powernode.constant.TokenConstant;
 import feign.RequestInterceptor;
 import feign.RequestTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -28,15 +27,15 @@ public class FeignInterceptor implements RequestInterceptor {
         ServletRequestAttributes requestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
         if (requestAttributes != null){
             HttpServletRequest request = requestAttributes.getRequest();
-            String token = request.getHeader(CommonConstant.AUTHORIZATION);
+            String token = request.getHeader(TokenConstant.AUTHORIZATION);
             if (StringUtils.hasText(token)){
                 // 传递给下一次请求
-                requestTemplate.header(CommonConstant.AUTHORIZATION,token);
+                requestTemplate.header(TokenConstant.AUTHORIZATION,token);
 
             }
         }else {
             // mq的请求场景 还是其他回调场景
-            requestTemplate.header(CommonConstant.AUTHORIZATION,CommonConstant.BEARER+CommonConstant.TOKEN);
+            requestTemplate.header(TokenConstant.AUTHORIZATION, TokenConstant.BEARER+ TokenConstant.TOKEN);
         }
 
 

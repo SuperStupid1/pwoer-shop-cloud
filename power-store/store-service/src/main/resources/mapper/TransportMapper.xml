@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mapper.TransportMapper">
+  <resultMap id="BaseResultMap" type="com.powernode.domain.Transport">
+    <!--@mbg.generated-->
+    <!--@Table transport-->
+    <id column="transport_id" property="transportId" />
+    <result column="trans_name" property="transName" />
+    <result column="create_time" property="createTime" />
+    <result column="shop_id" property="shopId" />
+    <result column="charge_type" property="chargeType" />
+    <result column="is_free_fee" property="isFreeFee" />
+    <result column="has_free_condition" property="hasFreeCondition" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    transport_id, trans_name, create_time, shop_id, charge_type, is_free_fee, has_free_condition
+  </sql>
+</mapper>

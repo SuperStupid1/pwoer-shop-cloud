@@ -2,9 +2,8 @@ package com.powernode.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.powernode.domain.ProdComm;
-import com.powernode.domain.ProdTag;
+import com.powernode.dto.ProdCommOverview;
 import com.powernode.service.ProdCommService;
-import com.powernode.service.ProdTagService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,4 +32,21 @@ public class ProdCommController {
         Page<ProdComm> prodCommPage = prodCommService.findProdCommPage(page,prodComm);
         return ResponseEntity.ok(prodCommPage);
     }
+
+    /*===============================小程序接口=========================================*/
+
+    @GetMapping("prodComm/prodCommData")
+    @ApiOperation("查询商品的评论总览")
+    public ResponseEntity<ProdCommOverview> getProdCommOverview(Long prodId){
+        ProdCommOverview prodCommOverview = prodCommService.loadProdCommByProdId(prodId);
+        return ResponseEntity.ok(prodCommOverview);
+    }
+
+    @GetMapping
+    @ApiOperation("根据评论类型分页查询评论")
+    public ResponseEntity<Page<ProdComm>> loadProdCommByEvaluate(Long prodId,Page<ProdComm> page,Integer evaluate){
+        Page<ProdComm> prodCommPage = prodCommService.loadProdCommByEvaluate(page,prodId,evaluate);
+        return ResponseEntity.ok(prodCommPage);
+    }
+
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mapper.AreaMapper">
+  <resultMap id="BaseResultMap" type="com.powernode.domain.Area">
+    <!--@mbg.generated-->
+    <!--@Table area-->
+    <id column="area_id" property="areaId" />
+    <result column="area_name" property="areaName" />
+    <result column="parent_id" property="parentId" />
+    <result column="level" property="level" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    area_id, area_name, parent_id, `level`
+  </sql>
+</mapper>
