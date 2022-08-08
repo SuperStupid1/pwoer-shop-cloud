@@ -52,4 +52,10 @@ public class ProdSearchController {
         return prodEsList;
     }
 
+    @GetMapping("pageProd")
+    public ResponseEntity<Page<ProdEs>> getProdEsByCategoryId(Long categoryId){
+        Page<ProdEs> page = prodSearchService.getProdEsByCategoryId(categoryId);
+        return ResponseEntity.ok(page);
+    }
+
 }

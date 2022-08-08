@@ -1,5 +1,6 @@
 package com.powernode.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.powernode.domain.Category;
 import com.powernode.domain.Prod;
@@ -10,6 +11,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -56,5 +58,14 @@ public class CategoryController {
         category.setShopId(1L);
         categoryService.save(category);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("category/categoryInfo")
+    @ApiOperation("加载分类列表")
+    public ResponseEntity<List<Category>> loadCategory(Long parentId){
+        List<Category> list = categoryService.list(new LambdaQueryWrapper<Category>()
+                .eq(!ObjectUtils.isEmpty(parentId), Category::getParentId, parentId)
+        );
+        return ResponseEntity.ok(list);
     }
 }

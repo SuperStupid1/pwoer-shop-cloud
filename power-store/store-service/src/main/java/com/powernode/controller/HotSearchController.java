@@ -13,6 +13,8 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * 信息描述
  *
@@ -29,7 +31,7 @@ public class HotSearchController {
 
     @GetMapping("page")
     @ApiOperation("分页查询热搜")
-    public ResponseEntity<Page<HotSearch>> loadHotSearch(Page<HotSearch> page, HotSearch hotSearch){
+    public ResponseEntity<Page<HotSearch>> loadHotSearch(Page<HotSearch> page, HotSearch hotSearch) {
         Page<HotSearch> searchPage = hotSearchService.page(page, new LambdaQueryWrapper<HotSearch>()
                 .eq(!ObjectUtils.isEmpty(hotSearch.getStatus()), HotSearch::getStatus, hotSearch.getStatus())
                 .like(StringUtils.hasText(hotSearch.getTitle()), HotSearch::getTitle, hotSearch.getTitle())
@@ -44,5 +46,12 @@ public class HotSearchController {
     public ResponseEntity<Void> loadHotSearchPage(@RequestBody HotSearch hotSearch) {
         hotSearchService.save(hotSearch);
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("hotSearchByShopId")
+    @ApiOperation("加载热搜")
+    public ResponseEntity<List<HotSearch>> loadHotSearch(@RequestParam Long shopId){
+        List<HotSearch> list = hotSearchService.list(new LambdaQueryWrapper<HotSearch>().eq(HotSearch::getShopId, shopId));
+        return ResponseEntity.ok(list);
     }
 }

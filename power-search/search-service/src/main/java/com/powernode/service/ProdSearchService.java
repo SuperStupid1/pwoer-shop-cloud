@@ -11,4 +11,6 @@ import com.powernode.domain.ProdEs;
  */
 public interface ProdSearchService {
     Page<ProdEs> searchProdEsByTagId(Long tagId, Integer size, Integer current);
+
+    Page<ProdEs> getProdEsByCategoryId(Long categoryId);
 }

@@ -2,6 +2,7 @@ package com.powernode.service.impl;
 
 import com.baomidou.mybatisplus.extension.api.R;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.powernode.domain.Prod;
 import com.powernode.domain.ProdEs;
 import com.powernode.service.ProdSearchService;
 import org.elasticsearch.index.query.QueryBuilders;
@@ -56,5 +57,22 @@ public class ProdSearchServiceImpl implements ProdSearchService {
         Page<ProdEs> prodEsPage = new Page<>(current, size);
         prodEsPage.setRecords(prodEsList);
         return prodEsPage;
+    }
+
+    @Override
+    public Page<ProdEs> getProdEsByCategoryId(Long categoryId) {
+        Page<ProdEs> page = new Page<>();
+        NativeSearchQueryBuilder builder = new NativeSearchQueryBuilder();
+        // 分页
+        builder.withPageable(PageRequest.of(new Long(page.getCurrent()).intValue()-1,new Long(page.getSize()).intValue()));
+        // 匹配分类id
+        builder.withQuery(QueryBuilders.termQuery("categoryId",categoryId));
+        NativeSearchQuery query = builder.build();
+        SearchHits<ProdEs> prodEsSearchHits = elasticsearchRestTemplate.search(query, ProdEs.class);
+        List<ProdEs> prodEsList = prodEsSearchHits.stream()
+                .map(SearchHit::getContent)
+                .collect(Collectors.toList());
+        page.setRecords(prodEsList);
+        return page;
     }
 }

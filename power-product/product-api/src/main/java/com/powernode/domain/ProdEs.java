@@ -59,7 +59,7 @@ public class ProdEs {
 
     @ApiModelProperty("商品的分类id")
     @Field(type = FieldType.Long)
-    private Long catpowerryId;
+    private Long categoryId;
 
     @ApiModelProperty("商品的标签")
     @Field(type = FieldType.Text)
