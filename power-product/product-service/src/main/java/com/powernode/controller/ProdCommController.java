@@ -42,7 +42,7 @@ public class ProdCommController {
         return ResponseEntity.ok(prodCommOverview);
     }
 
-    @GetMapping
+    @GetMapping("prodComm/prodCommPageByProd")
     @ApiOperation("根据评论类型分页查询评论")
     public ResponseEntity<Page<ProdComm>> loadProdCommByEvaluate(Long prodId,Page<ProdComm> page,Integer evaluate){
         Page<ProdComm> prodCommPage = prodCommService.loadProdCommByEvaluate(page,prodId,evaluate);

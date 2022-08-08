@@ -1,16 +1,22 @@
 package com.powernode.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.powernode.domain.Prod;
+import com.powernode.domain.Sku;
 import com.powernode.service.ProdService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * 信息描述
@@ -55,6 +61,13 @@ public class ProdController {
     public ResponseEntity<Prod> getProdInfo(Long prodId){
         Prod prod = prodService.getById(prodId);
         return ResponseEntity.ok(prod);
+    }
+
+
+    @PostMapping("getSkuByIds")
+    @ApiOperation("根据id查询sku")
+    List<Sku> getSkuByIds(@RequestBody List<Long> skuIds){
+        return prodService.getSkuByIds(skuIds);
     }
 
 

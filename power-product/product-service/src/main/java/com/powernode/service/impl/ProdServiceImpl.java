@@ -21,9 +21,11 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -222,14 +224,14 @@ public class ProdServiceImpl extends ServiceImpl<ProdMapper, Prod> implements Pr
             List<ProdComm> commList = prodCommList.stream()
                     .filter(prodComm -> prodComm.getProdId().equals(prod.getProdId()))
                     .collect(Collectors.toList());
-            if (!CollectionUtils.isEmpty(commList)){
+            if (!CollectionUtils.isEmpty(commList)) {
                 int totalComm = commList.size();
                 long goodsCount = commList.stream()
                         .filter(prodComm -> prodComm.getEvaluate().equals(0))
                         .count();
 
                 BigDecimal goodsLv = new BigDecimal(goodsCount)
-                        .divide(new BigDecimal(totalComm),2,BigDecimal.ROUND_HALF_UP)
+                        .divide(new BigDecimal(totalComm), 2, BigDecimal.ROUND_HALF_UP)
                         .multiply(new BigDecimal(100));
                 prod.setPraiseNumber(goodsCount);
                 prod.setPositiveRating(goodsLv);
@@ -237,5 +239,37 @@ public class ProdServiceImpl extends ServiceImpl<ProdMapper, Prod> implements Pr
         });
 
         return prodList;
+    }
+
+    /**
+     * 根据商品id查询商品信息 将skulist 和taglist封装进去
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Prod getById(Serializable id) {
+        Prod prod = prodMapper.selectById(id);
+        prod.setSkuList(skuService.list(new LambdaQueryWrapper<Sku>()
+                .eq(Sku::getProdId, id)
+                .eq(Sku::getStatus, 1)
+        ));
+        List<Long> tagIdList = prodTagReferenceService.list(new LambdaQueryWrapper<ProdTagReference>()
+                .eq(ProdTagReference::getProdId, id))
+                .stream()
+                .map(ProdTagReference::getTagId)
+                .collect(Collectors.toList());
+        prod.setTagList(tagIdList);
+        return prod;
+    }
+
+    @Override
+    public List<Sku> getSkuByIds(List<Long> skuIds) {
+        if (CollectionUtils.isEmpty(skuIds)) {
+            return Collections.emptyList();
+        }
+        return skuService.list(new LambdaQueryWrapper<Sku>()
+                .in(Sku::getSkuId, skuIds)
+        ) ;
     }
 }

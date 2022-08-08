@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.powernode.domain.IndexImg;
@@ -81,4 +82,7 @@ public class IndexImgServiceImpl extends ServiceImpl<IndexImgMapper, IndexImg> i
         }
         return indexImgMapper.insert(indexImg) > 0;
     }
+
+
+
 }
