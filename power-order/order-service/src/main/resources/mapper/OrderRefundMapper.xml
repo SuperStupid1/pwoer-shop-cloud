@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mapper.OrderRefundMapper">
+  <resultMap id="BaseResultMap" type="com.powernode.domain.OrderRefund">
+    <!--@mbg.generated-->
+    <!--@Table order_refund-->
+    <id column="refund_id" property="refundId" />
+    <result column="shop_id" property="shopId" />
+    <result column="order_id" property="orderId" />
+    <result column="order_number" property="orderNumber" />
+    <result column="order_amount" property="orderAmount" />
+    <result column="order_item_id" property="orderItemId" />
+    <result column="refund_sn" property="refundSn" />
+    <result column="flow_trade_no" property="flowTradeNo" />
+    <result column="out_refund_no" property="outRefundNo" />
+    <result column="pay_type" property="payType" />
+    <result column="pay_type_name" property="payTypeName" />
+    <result column="user_id" property="userId" />
+    <result column="goods_num" property="goodsNum" />
+    <result column="refund_amount" property="refundAmount" />
+    <result column="apply_type" property="applyType" />
+    <result column="refund_sts" property="refundSts" />
+    <result column="return_money_sts" property="returnMoneySts" />
+    <result column="apply_time" property="applyTime" />
+    <result column="handel_time" property="handelTime" />
+    <result column="refund_time" property="refundTime" />
+    <result column="photo_files" property="photoFiles" />
+    <result column="buyer_msg" property="buyerMsg" />
+    <result column="seller_msg" property="sellerMsg" />
+    <result column="express_name" property="expressName" />
+    <result column="express_no" property="expressNo" />
+    <result column="ship_time" property="shipTime" />
+    <result column="receive_time" property="receiveTime" />
+    <result column="receive_message" property="receiveMessage" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    refund_id, shop_id, order_id, order_number, order_amount, order_item_id, refund_sn, 
+    flow_trade_no, out_refund_no, pay_type, pay_type_name, user_id, goods_num, refund_amount, 
+    apply_type, refund_sts, return_money_sts, apply_time, handel_time, refund_time, photo_files, 
+    buyer_msg, seller_msg, express_name, express_no, ship_time, receive_time, receive_message
+  </sql>
+</mapper>

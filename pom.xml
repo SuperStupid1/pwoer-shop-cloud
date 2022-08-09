@@ -17,6 +17,8 @@
         <module>power-member</module>
         <module>power-search</module>
         <module>power-cart</module>
+        <module>power-message</module>
+        <module>power-order</module>
     </modules>
 
     <!-- 最外面的父项目是boot -->

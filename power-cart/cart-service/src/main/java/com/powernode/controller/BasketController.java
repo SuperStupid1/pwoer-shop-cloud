@@ -63,6 +63,14 @@ public class BasketController {
         return ResponseEntity.ok(cartMoney);
     }
 
+    @PostMapping("getBasketById")
+    @ApiOperation("根据id查询购物车信息")
+    public List<Basket> getBasketById(@RequestBody List<Long> basketIds){
+        return basketService.list(new LambdaQueryWrapper<Basket>()
+                .in(Basket::getBasketId, basketIds)
+        );
+    }
+
 
 
 }

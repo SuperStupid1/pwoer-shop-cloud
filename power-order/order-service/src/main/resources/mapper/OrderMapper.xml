@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mapper.OrderMapper">
+  <resultMap id="BaseResultMap" type="com.powernode.domain.Order">
+    <!--@mbg.generated-->
+    <!--@Table `order`-->
+    <id column="order_id" property="orderId" />
+    <result column="shop_id" property="shopId" />
+    <result column="prod_name" property="prodName" />
+    <result column="user_id" property="userId" />
+    <result column="order_number" property="orderNumber" />
+    <result column="total" property="total" />
+    <result column="actual_total" property="actualTotal" />
+    <result column="pay_type" property="payType" />
+    <result column="remarks" property="remarks" />
+    <result column="status" property="status" />
+    <result column="dvy_type" property="dvyType" />
+    <result column="dvy_id" property="dvyId" />
+    <result column="dvy_flow_id" property="dvyFlowId" />
+    <result column="freight_amount" property="freightAmount" />
+    <result column="addr_order_id" property="addrOrderId" />
+    <result column="product_nums" property="productNums" />
+    <result column="create_time" property="createTime" />
+    <result column="update_time" property="updateTime" />
+    <result column="pay_time" property="payTime" />
+    <result column="dvy_time" property="dvyTime" />
+    <result column="finally_time" property="finallyTime" />
+    <result column="cancel_time" property="cancelTime" />
+    <result column="is_payed" property="isPayed" />
+    <result column="delete_status" property="deleteStatus" />
+    <result column="refund_sts" property="refundSts" />
+    <result column="reduce_amount" property="reduceAmount" />
+    <result column="order_type" property="orderType" />
+    <result column="close_type" property="closeType" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    order_id, shop_id, prod_name, user_id, order_number, total, actual_total, pay_type, 
+    remarks, `status`, dvy_type, dvy_id, dvy_flow_id, freight_amount, addr_order_id, 
+    product_nums, create_time, update_time, pay_time, dvy_time, finally_time, cancel_time, 
+    is_payed, delete_status, refund_sts, reduce_amount, order_type, close_type
+  </sql>
+</mapper>

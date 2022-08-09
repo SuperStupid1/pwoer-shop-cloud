@@ -1,5 +1,6 @@
 package com.powernode.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.powernode.domain.UserAddr;
 import com.powernode.service.UserAddrService;
 import io.swagger.annotations.Api;
@@ -58,8 +59,18 @@ public class UserAddrController {
 
     @PutMapping("updateAddr")
     @ApiOperation("更新收货地址")
-    public ResponseEntity<Void> updateUserAddr(@RequestBody UserAddr userAddr){
+    public ResponseEntity<Void> updateUserAddr(@RequestBody UserAddr userAddr) {
         userAddrService.updateById(userAddr);
         return ResponseEntity.ok().build();
+    }
+
+    @ApiOperation("根据用户查询默认地址")
+    @PostMapping("getDefaultAddr")
+    public UserAddr getDefaultAddrByUserId(@RequestBody String userId) {
+        return userAddrService.getOne(new LambdaQueryWrapper<UserAddr>()
+                .eq(UserAddr::getUserId, userId)
+                .eq(UserAddr::getStatus, 1)
+                .eq(UserAddr::getCommonAddr, 1)
+        );
     }
 }

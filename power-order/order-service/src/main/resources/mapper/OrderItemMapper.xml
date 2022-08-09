@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mapper.OrderItemMapper">
+  <resultMap id="BaseResultMap" type="com.powernode.domain.OrderItem">
+    <!--@mbg.generated-->
+    <!--@Table order_item-->
+    <id column="order_item_id" property="orderItemId" />
+    <result column="shop_id" property="shopId" />
+    <result column="order_number" property="orderNumber" />
+    <result column="prod_id" property="prodId" />
+    <result column="sku_id" property="skuId" />
+    <result column="prod_count" property="prodCount" />
+    <result column="prod_name" property="prodName" />
+    <result column="sku_name" property="skuName" />
+    <result column="pic" property="pic" />
+    <result column="price" property="price" />
+    <result column="user_id" property="userId" />
+    <result column="product_total_amount" property="productTotalAmount" />
+    <result column="rec_time" property="recTime" />
+    <result column="comm_sts" property="commSts" />
+    <result column="distribution_card_no" property="distributionCardNo" />
+    <result column="basket_date" property="basketDate" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    order_item_id, shop_id, order_number, prod_id, sku_id, prod_count, prod_name, sku_name, 
+    pic, price, user_id, product_total_amount, rec_time, comm_sts, distribution_card_no, 
+    basket_date
+  </sql>
+</mapper>

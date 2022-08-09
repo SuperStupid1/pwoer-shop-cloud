@@ -44,6 +44,10 @@ public class UserAddrServiceImpl extends ServiceImpl<UserAddrMapper, UserAddr> i
         );
     }
 
+    /**
+     * 修改默认地址
+     * @param addrId
+     */
     @Override
     public void updateDefaultAddr(Long addrId) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();

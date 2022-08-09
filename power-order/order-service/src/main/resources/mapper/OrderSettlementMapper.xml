@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.powernode.mapper.OrderSettlementMapper">
+  <resultMap id="BaseResultMap" type="com.powernode.domain.OrderSettlement">
+    <!--@mbg.generated-->
+    <!--@Table order_settlement-->
+    <id column="settlement_id" property="settlementId" />
+    <result column="pay_no" property="payNo" />
+    <result column="biz_pay_no" property="bizPayNo" />
+    <result column="order_number" property="orderNumber" />
+    <result column="pay_type" property="payType" />
+    <result column="pay_type_name" property="payTypeName" />
+    <result column="pay_amount" property="payAmount" />
+    <result column="is_clearing" property="isClearing" />
+    <result column="user_id" property="userId" />
+    <result column="create_time" property="createTime" />
+    <result column="clearing_time" property="clearingTime" />
+    <result column="version" property="version" />
+    <result column="pay_status" property="payStatus" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--@mbg.generated-->
+    settlement_id, pay_no, biz_pay_no, order_number, pay_type, pay_type_name, pay_amount, 
+    is_clearing, user_id, create_time, clearing_time, version, pay_status
+  </sql>
+</mapper>
