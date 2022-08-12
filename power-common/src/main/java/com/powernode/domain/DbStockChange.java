@@ -6,22 +6,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * 封装商品库存变化的数据
+ * 库存修改的传输对象
  *
  * @author DuBo
- * @createDate 2022/8/2 18:01
+ * @createDate 2022/8/11 14:36
  */
-
 @Data
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class EsChange {
+@Builder
+public class DbStockChange {
 
-    private Long prodId;
+    private Long id;
 
-    /**
-     * 商品变化的数量 符号代表增减
-     */
     private Integer count;
 }

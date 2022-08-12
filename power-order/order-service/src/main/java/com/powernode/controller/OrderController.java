@@ -5,6 +5,7 @@ import com.powernode.service.OrderService;
 import com.powernode.vo.OrderVo;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.CollectionUtils;
@@ -29,5 +30,12 @@ public class OrderController {
     public ResponseEntity<OrderVo> loadConfirm(@RequestBody OrderConfirm orderConfirm){
         OrderVo orderVo = orderService.toConfirm(orderConfirm);
         return ResponseEntity.ok(orderVo);
+    }
+
+    @PostMapping("submit")
+    @ApiOperation("提交订单")
+    public ResponseEntity<String> orderSubmit(@RequestBody OrderVo orderVo){
+        String orderNum = orderService.orderSubmit(orderVo);
+        return ResponseEntity.ok(orderNum);
     }
 }

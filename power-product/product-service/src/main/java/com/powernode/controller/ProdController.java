@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.powernode.domain.Prod;
 import com.powernode.domain.Sku;
+import com.powernode.dto.StockChangeDto;
 import com.powernode.service.ProdService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -66,8 +67,14 @@ public class ProdController {
 
     @PostMapping("getSkuByIds")
     @ApiOperation("根据id查询sku")
-    List<Sku> getSkuByIds(@RequestBody List<Long> skuIds){
+    public List<Sku> getSkuByIds(@RequestBody List<Long> skuIds){
         return prodService.getSkuByIds(skuIds);
+    }
+
+    @PostMapping("stockChange")
+    @ApiOperation("修改库存")
+    public void changeStack(@RequestBody StockChangeDto stockChangeDto){
+        prodService.changeStack(stockChangeDto);
     }
 
 

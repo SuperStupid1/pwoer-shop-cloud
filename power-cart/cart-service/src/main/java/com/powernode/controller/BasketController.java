@@ -71,6 +71,13 @@ public class BasketController {
         );
     }
 
-
+    @PostMapping("clearCart/{userId}")
+    @ApiOperation("清空当前用户选择结算的购物车")
+    public void clearCart(@RequestBody List<Long> skuIds, @PathVariable String userId){
+        basketService.remove(new LambdaQueryWrapper<Basket>()
+                .eq(Basket::getUserId,userId)
+                .in(Basket::getSkuId,skuIds)
+        );
+    }
 
 }

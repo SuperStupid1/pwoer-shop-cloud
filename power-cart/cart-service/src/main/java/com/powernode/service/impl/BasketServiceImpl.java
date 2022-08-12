@@ -155,6 +155,9 @@ public class BasketServiceImpl extends ServiceImpl<BasketMapper, Basket> impleme
     @Override
     public CartMoney calcuCartMoney(List<Long> basketIds) {
         CartMoney cartMoney = new CartMoney();
+        if (CollectionUtils.isEmpty(basketIds)){
+            return new CartMoney();
+        }
         List<Basket> baskets = basketMapper.selectList(new LambdaQueryWrapper<Basket>()
                 .in(Basket::getBasketId, basketIds)
         );

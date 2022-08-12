@@ -1,6 +1,7 @@
 package com.powernode.feign;
 
 import com.powernode.domain.Sku;
+import com.powernode.dto.StockChangeDto;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -25,4 +26,7 @@ public interface OrderProdFeign {
     @PostMapping("prod/prod/getSkuByIds")
     @ApiOperation("根据id查询sku")
     List<Sku> getSkuByIds(@RequestBody List<Long> skuIds);
+
+    @PostMapping("prod/prod/stockChange")
+    void changeStack(@RequestBody StockChangeDto stockChangeDto);
 }

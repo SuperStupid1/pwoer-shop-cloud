@@ -3,10 +3,9 @@ package com.powernode.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.powernode.domain.ProdComm;
-import com.powernode.domain.ProdTagReference;
-import com.powernode.domain.Sku;
+import com.powernode.domain.*;
 import com.powernode.dto.DeliveryModeVo;
+import com.powernode.dto.StockChangeDto;
 import com.powernode.service.ProdCommService;
 import com.powernode.service.ProdTagReferenceService;
 import com.powernode.service.SkuService;
@@ -15,8 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.powernode.mapper.ProdMapper;
-import com.powernode.domain.Prod;
 import com.powernode.service.ProdService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
@@ -270,6 +269,43 @@ public class ProdServiceImpl extends ServiceImpl<ProdMapper, Prod> implements Pr
         }
         return skuService.list(new LambdaQueryWrapper<Sku>()
                 .in(Sku::getSkuId, skuIds)
-        ) ;
+        );
+    }
+
+    /**
+     * 修改sku和prod库存 设计到分布式线程安全问题
+     * 这里采用mysql实现分布式锁
+     *
+     * @param stockChangeDto
+     */
+    @Override
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void changeStack(StockChangeDto stockChangeDto) {
+        // 修改sku库存
+        List<DbStockChange> skuChanges = stockChangeDto.getSkuChanges();
+        // 遍历修改
+        skuChanges.forEach(dbStockChange -> {
+            int row = skuService.changeStack(dbStockChange);
+            if (row == 0) {
+                Sku sku = skuService.getById(dbStockChange.getId());
+                throw new RuntimeException(
+                        sku.getProdName() + ":" + sku.getSkuName() + ":库存不足,本次购买："
+                                + dbStockChange.getCount()
+                                + ",库存：" + sku.getActualStocks()
+                );
+            }
+        });
+
+        // 修改prod库存
+        List<DbStockChange> prodChanges = stockChangeDto.getProdChanges();
+        // 遍历修改
+        prodChanges.forEach(dbStockChange -> {
+            int row = prodMapper.updateStock(dbStockChange);
+            if (row == 0) {
+                Prod prod = prodMapper.selectById(dbStockChange.getId());
+                throw new RuntimeException(prod.getProdName()+"库存不足,本次购买:"
+                        +dbStockChange.getCount()+"库存："+prod.getTotalStocks());
+            }
+        });
     }
 }

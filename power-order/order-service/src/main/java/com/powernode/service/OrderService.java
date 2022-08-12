@@ -7,11 +7,14 @@ import com.powernode.vo.OrderVo;
 
 /**
  * 信息描述
+ *
  * @author DuBo
  * @createDate 2022/8/9 9:44
  */
-public interface OrderService extends IService<Order>{
+public interface OrderService extends IService<Order> {
 
 
-        OrderVo toConfirm(OrderConfirm orderConfirm);
-    }
+    OrderVo toConfirm(OrderConfirm orderConfirm);
+
+    String orderSubmit(OrderVo orderVo);
+}

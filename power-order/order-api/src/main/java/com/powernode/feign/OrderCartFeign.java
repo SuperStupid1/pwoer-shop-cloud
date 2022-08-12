@@ -2,6 +2,7 @@ package com.powernode.feign;
 
 import com.powernode.domain.Basket;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
@@ -18,4 +19,7 @@ public interface OrderCartFeign {
 
     @PostMapping("p/shopCart/getBasketById")
     List<Basket> getBasketById(@RequestBody List<Long> basketIds);
+
+    @PostMapping("p/shopCart/clearCart/{userId}")
+    void clearCart(@RequestBody List<Long> skuIds, @PathVariable String userId);
 }

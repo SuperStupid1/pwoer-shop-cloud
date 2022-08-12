@@ -186,7 +186,7 @@ public class EsImportServiceImpl implements EsImportService, ApplicationRunner {
      * @param channel
      */
 
-//    @RabbitListener(queues = QueueConstant.ES_CHANGE_QUEUE, concurrency = "3-5")
+    @RabbitListener(queues = QueueConstant.ES_CHANGE_QUEUE, concurrency = "3-5")
     public void handlerProduceEs(Message message, Channel channel) {
         // 获取消息
         String megStr = new String(message.getBody());
