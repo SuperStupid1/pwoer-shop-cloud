@@ -28,7 +28,7 @@ public class RabbitmqConfig {
     public Queue wxMsgDelayQueue(){
         Map<String,Object> map = new HashMap<>(10);
         // 设置延迟的时间 设置消息死亡后走哪个交换机  走哪个路由key
-        map.put("x-message-ttl",1000*60*4);
+        map.put("x-message-ttl",1000*10);
         map.put("x-dead-letter-exchange",MessageConstant.WX_MSG_DEAD_EXCHANGE);
         map.put("x-dead-letter-routing-key",MessageConstant.WX_MSG_DEAD_KEY);
         return new Queue(QueueConstant.WX_MSG_DELAY_QUEUE,true,false,false,map);

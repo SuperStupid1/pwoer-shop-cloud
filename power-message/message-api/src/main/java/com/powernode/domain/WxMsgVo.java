@@ -18,16 +18,16 @@ import java.util.Map;
 public class WxMsgVo {
 
     @JsonProperty(value = "touser")
-    private String toUser;
+    private String touser;
 
     @JsonProperty(value = "template_id")
-    private String templateId;
+    private String template_id;
 
     @JsonProperty(value = "url")
     private String url;
 
     @JsonProperty(value = "topcolor")
-    private String topColor;
+    private String topcolor;
 
     @JsonProperty(value = "data")
     private Map<String,? extends Map<String, String>> data;

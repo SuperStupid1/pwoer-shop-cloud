@@ -228,7 +228,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         // 6、超时订单处理
         overtimeOrderHandle(stockChangeDto,orderSn);
         // 7、定时查询(延迟队列)用户是否支付，如未支付进行微信公众号通知
-        sendWxMsg(order.getUserId(),orderSn,order.getProductNums(),order.getTotal());
+        sendWxMsg(order.getUserId(),orderSn,order.getProductNums(),order.getActualTotal());
         return orderSn;
     }
 

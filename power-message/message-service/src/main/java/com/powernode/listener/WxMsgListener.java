@@ -43,16 +43,14 @@ public class WxMsgListener {
         WxMsgDto wxMsgDto = JSON.parseObject(msgBody, WxMsgDto.class);
         // 封装微信通知 vo
         WxMsgVo wxMsgVo = new WxMsgVo();
-        wxMsgVo.setToUser(wxMsgDto.getUserId());
-        wxMsgVo.setTemplateId(templateId);
+        wxMsgVo.setTouser("ox2i46NdxFUMtTw0hsquIuZGJS1g");
+        wxMsgVo.setTemplate_id(templateId);
         wxMsgVo.setUrl("http://weixin.qq.com/download");
-        wxMsgVo.setTopColor("#FF0000");
-        HashMap<String, String> map = new HashMap<>(3);
-        map.put("orderSn",wxMsgDto.getOrderSn());
-        map.put("productNums",wxMsgDto.getProductNums().toString());
-        map.put("total",wxMsgDto.getTotal().toString());
-        Map<String, HashMap<String, String>> data = new HashMap<>(1);
-        data.put("data",map);
+        wxMsgVo.setTopcolor("#FF0000");
+        Map<String, Map<String, String>> data = new HashMap<>(1);
+        data.put("orderSn",WxMsgVo.buildData(wxMsgDto.getOrderSn(),"#173177"));
+        data.put("productNums",WxMsgVo.buildData(wxMsgDto.getProductNums().toString(),"#173177"));
+        data.put("total",WxMsgVo.buildData(wxMsgDto.getTotal().toString(),"#173177"));
         wxMsgVo.setData(data);
         // 发送通知
         String token = redisTemplate.opsForValue().get("access_token");
