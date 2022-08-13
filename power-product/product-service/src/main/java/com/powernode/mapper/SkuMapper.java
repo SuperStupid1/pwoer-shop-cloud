@@ -14,6 +14,6 @@ import org.apache.ibatis.annotations.Update;
 @Mapper
 public interface SkuMapper extends BaseMapper<Sku> {
 
-    @Update("update sku set actual_stocks = actual_stocks + #{count} where sku_id = #{id} and actual_stocks + #{count} >= 0;")
+    @Update("update sku set actual_stocks = actual_stocks + #{count},stocks = stocks - #{count}  where sku_id = #{id} and actual_stocks + #{count} >= 0;")
     int updateStack(DbStockChange dbStockChange);
 }

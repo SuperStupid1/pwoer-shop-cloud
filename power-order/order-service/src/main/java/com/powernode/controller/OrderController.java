@@ -1,5 +1,7 @@
 package com.powernode.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.powernode.domain.Order;
 import com.powernode.dto.OrderConfirm;
 import com.powernode.service.OrderService;
 import com.powernode.vo.OrderVo;
@@ -36,6 +38,21 @@ public class OrderController {
     @ApiOperation("提交订单")
     public ResponseEntity<String> orderSubmit(@RequestBody OrderVo orderVo){
         String orderNum = orderService.orderSubmit(orderVo);
-        return ResponseEntity.ok(orderNum);
+        return ResponseEntity.ok("order:" + orderNum);
     }
+
+    @PostMapping("getOrder")
+    @ApiOperation("根据单号查询订单")
+    public Order getOrder(@RequestBody String orderNumber){
+        return orderService.getOne(new LambdaQueryWrapper<Order>()
+                .eq(Order::getOrderNumber,orderNumber));
+    }
+
+    @GetMapping("query")
+    @ApiOperation("根据单号查询订单是否已经支付完成")
+    public ResponseEntity<Boolean> queryOrderIsPay(@RequestParam("orderSn") String orderNumber){
+        Boolean flag = orderService.queryOrderIsPay(orderNumber);
+        return ResponseEntity.ok(flag);
+    }
+
 }

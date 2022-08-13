@@ -232,6 +232,21 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         return orderSn;
     }
 
+    /**
+     * 查询订单是否已经支付
+     * @param orderNumber
+     * @return
+     */
+    @Override
+    public Boolean queryOrderIsPay(String orderNumber) {
+
+        Order order = orderMapper.selectOne(new LambdaQueryWrapper<Order>()
+                .eq(Order::getOrderNumber, orderNumber));
+        if (ObjectUtils.isEmpty(order)){
+            return false;
+        }
+        return order.getIsPayed();
+    }
 
     /**
      * 监听订单超时未支付的死信队列，回滚库存
@@ -240,28 +255,32 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
      */
     @RabbitListener(queues = OrderConstant.ORDER_TIMEOUT_DEAD_QUEUE,concurrency = "3-5")
     public void restoreDbStock(Message message, Channel channel){
+
         String str = new String(message.getBody());
         OvertimeOrderDto overtimeOrderDto = JSON.parseObject(str, OvertimeOrderDto.class);
-        // 回滚库存
-        StockChangeDto stockChangeDto = overtimeOrderDto.getStockChangeDto();
-        // 对数量乘以-1
-        List<DbStockChange> prodChanges = stockChangeDto.getProdChanges();
-        prodChanges.forEach(dbStockChange -> dbStockChange.setCount(dbStockChange.getCount() * -1));
-        List<DbStockChange> skuChanges = stockChangeDto.getSkuChanges();
-        skuChanges.forEach(dbStockChange -> dbStockChange.setCount(dbStockChange.getCount() * -1));
-        stockChangeDto.setProdChanges(prodChanges);
-        stockChangeDto.setSkuChanges(skuChanges);
-        // 远程调用修改库存
-        orderProdFeign.changeStack(stockChangeDto);
-        // 修改订单状态
+        String orderSn = overtimeOrderDto.getOrderSn();
+        // 查看订单是否已支付
         Order order = orderMapper.selectOne(new LambdaQueryWrapper<Order>()
-                .eq(Order::getOrderNumber, overtimeOrderDto.getOrderSn())
+                .eq(Order::getOrderNumber, orderSn)
         );
-        order.setStatus(6);
-        order.setDeleteStatus(1);
-        orderMapper.updateById(order);
-        // 删除orderItem todo...
-
+        if (!order.getIsPayed()){
+            // 回滚库存
+            StockChangeDto stockChangeDto = overtimeOrderDto.getStockChangeDto();
+            // 对数量乘以-1
+            List<DbStockChange> prodChanges = stockChangeDto.getProdChanges();
+            prodChanges.forEach(dbStockChange -> dbStockChange.setCount(dbStockChange.getCount() * -1));
+            List<DbStockChange> skuChanges = stockChangeDto.getSkuChanges();
+            skuChanges.forEach(dbStockChange -> dbStockChange.setCount(dbStockChange.getCount() * -1));
+            stockChangeDto.setProdChanges(prodChanges);
+            stockChangeDto.setSkuChanges(skuChanges);
+            // 远程调用修改库存
+            orderProdFeign.changeStack(stockChangeDto);
+            // 修改订单状态
+            order.setStatus(6);
+            order.setDeleteStatus(1);
+            orderMapper.updateById(order);
+            // 删除orderItem todo...
+        }
 
         try {
             channel.basicAck(message.getMessageProperties().getDeliveryTag(),false);

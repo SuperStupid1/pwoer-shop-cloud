@@ -17,4 +17,6 @@ public interface OrderService extends IService<Order> {
     OrderVo toConfirm(OrderConfirm orderConfirm);
 
     String orderSubmit(OrderVo orderVo);
+
+    Boolean queryOrderIsPay(String orderNumber);
 }

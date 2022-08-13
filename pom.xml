@@ -19,6 +19,7 @@
         <module>power-cart</module>
         <module>power-message</module>
         <module>power-order</module>
+        <module>power-pay</module>
     </modules>
 
     <!-- 最外面的父项目是boot -->

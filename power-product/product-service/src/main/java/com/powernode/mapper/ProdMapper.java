@@ -14,6 +14,6 @@ import org.apache.ibatis.annotations.Update;
 @Mapper
 public interface ProdMapper extends BaseMapper<Prod> {
 
-    @Update("update prod set total_stocks = total_stocks + #{count} where prod_id = #{id} and total_stocks + #{count} >= 0")
+    @Update("update prod set total_stocks = total_stocks + #{count},sold_num = sold_num - #{count}  where prod_id = #{id} and total_stocks + #{count} >= 0")
     int updateStock(DbStockChange dbStockChange);
 }
