@@ -84,7 +84,8 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
                         "/webjars/**",
                         "/swagger-ui/**",
                         "/druid/**",
-                        "/actuator/**")
+                        "/actuator/**",
+                        "/p/order/payNotify/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated();

@@ -94,52 +94,11 @@ public class PayServiceImpl implements PayService {
                 AlipayClient alipayClient = new DefaultAlipayClient(serverUrl, appId, privateKey, format,
                         charset, alipayPublicKey, signType);
                 AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();
-                request.setNotifyUrl("http://9y8xxx.natappfree.cc/p/order/payNotify");
+                request.setNotifyUrl("http://y82t65.natappfree.cc/p/order/payNotify");
                 JSONObject bizContent = new JSONObject();
                 bizContent.put("out_trade_no", order.getOrderNumber());
                 bizContent.put("total_amount", order.getActualTotal());
                 bizContent.put("subject", order.getProdName());
-
-                //// 商品明细信息，按需传入
-                //JSONArray goodsDetail = new JSONArray();
-                //JSONObject goods1 = new JSONObject();
-                //goods1.put("goods_id", "goodsNo1");
-                //goods1.put("goods_name", "子商品1");
-                //goods1.put("quantity", 1);
-                //goods1.put("price", 0.01);
-                //goodsDetail.add(goods1);
-                //bizContent.put("goods_detail", goodsDetail);
-
-                //// 扩展信息，按需传入
-                //JSONObject extendParams = new JSONObject();
-                //extendParams.put("sys_service_provider_id", "2088511833207846");
-                //bizContent.put("extend_params", extendParams);
-
-                //// 结算信息，按需传入
-                //JSONObject settleInfo = new JSONObject();
-                //JSONArray settleDetailInfos = new JSONArray();
-                //JSONObject settleDetail = new JSONObject();
-                //settleDetail.put("trans_in_type", "defaultSettle");
-                //settleDetail.put("amount", 0.01);
-                //settleDetailInfos.add(settleDetail);
-                //settleInfo.put("settle_detail_infos", settleDetailInfos);
-                //bizContent.put("settle_info", settleInfo);
-
-                //// 二级商户信息，按需传入
-                //JSONObject subMerchant = new JSONObject();
-                //subMerchant.put("merchant_id", "2088000603999128");
-                //bizContent.put("sub_merchant", subMerchant);
-
-                //// 业务参数信息，按需传入
-                //JSONObject businessParams = new JSONObject();
-                //businessParams.put("busi_params_key", "busiParamsValue");
-                //bizContent.put("business_params", businessParams);
-
-                //// 营销信息，按需传入
-                //JSONObject promoParams = new JSONObject();
-                //promoParams.put("promo_params_key", "promoParamsValue");
-                //bizContent.put("promo_params", promoParams);
-
                 request.setBizContent(bizContent.toString());
                 AlipayTradePrecreateResponse response = null;
                 try {
@@ -169,7 +128,7 @@ public class PayServiceImpl implements PayService {
         // 验签
         boolean verifySignResult = false;
         try {
-            verifySignResult = AlipaySignature.certVerifyV1(map, alipayPublicKey, charset, signType);
+            verifySignResult = AlipaySignature.verifyV1(map, alipayPublicKey, charset, signType);
         } catch (AlipayApiException e) {
             throw new RuntimeException(e);
         }

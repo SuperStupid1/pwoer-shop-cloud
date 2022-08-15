@@ -24,20 +24,17 @@ public class FeignInterceptor implements RequestInterceptor {
     @Override
     public void apply(RequestTemplate requestTemplate) {
         // 获取请求对象
-        ServletRequestAttributes requestAttributes = (ServletRequestAttributes)RequestContextHolder.getRequestAttributes();
-        if (requestAttributes != null){
+        ServletRequestAttributes requestAttributes = (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+        if (requestAttributes != null) {
             HttpServletRequest request = requestAttributes.getRequest();
             String token = request.getHeader(TokenConstant.AUTHORIZATION);
-            if (StringUtils.hasText(token)){
+            if (StringUtils.hasText(token)) {
                 // 传递给下一次请求
-                requestTemplate.header(TokenConstant.AUTHORIZATION,token);
-
+                requestTemplate.header(TokenConstant.AUTHORIZATION, token);
+                return;
             }
-        }else {
-            // mq的请求场景 还是其他回调场景
-            requestTemplate.header(TokenConstant.AUTHORIZATION, TokenConstant.BEARER+ TokenConstant.TOKEN);
         }
-
-
+        // mq的请求场景 还是其他回调场景
+        requestTemplate.header(TokenConstant.AUTHORIZATION, TokenConstant.BEARER + TokenConstant.TOKEN);
     }
 }
