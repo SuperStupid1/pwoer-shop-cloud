@@ -19,4 +19,6 @@ public interface OrderService extends IService<Order> {
     String orderSubmit(OrderVo orderVo);
 
     Boolean queryOrderIsPay(String orderNumber);
+
+    void updateOrderStatus(String orderNumber);
 }

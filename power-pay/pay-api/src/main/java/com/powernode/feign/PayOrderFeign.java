@@ -17,4 +17,7 @@ public interface PayOrderFeign {
 
     @PostMapping("p/myOrder/getOrder")
     Order getOrder(@RequestBody String orderNumber);
+
+    @PostMapping("p/myOrder/updateOrderStatus")
+    void updateOrderStatus(@RequestBody String orderNumber);
 }

@@ -55,4 +55,10 @@ public class OrderController {
         return ResponseEntity.ok(flag);
     }
 
+    @PostMapping("updateOrderStatus")
+    @ApiOperation("修改订单状态")
+    public void updateOrderStatus(@RequestBody String orderNumber){
+        orderService.updateOrderStatus(orderNumber);
+    }
+
 }

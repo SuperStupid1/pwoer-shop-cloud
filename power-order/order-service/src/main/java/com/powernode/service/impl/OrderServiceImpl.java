@@ -10,11 +10,13 @@ import com.powernode.dto.OrderConfirm;
 import com.powernode.dto.StockChangeDto;
 import com.powernode.feign.OrderCartFeign;
 import com.powernode.feign.OrderMemberFeign;
+import com.powernode.feign.OrderPayFeign;
 import com.powernode.feign.OrderProdFeign;
 import com.powernode.service.OrderItemService;
 import com.powernode.vo.OrderVo;
 import com.powernode.vo.ShopOrder;
 import com.rabbitmq.client.Channel;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -41,6 +43,7 @@ import java.util.stream.Collectors;
  * @createDate 2022/8/9 9:44
  */
 @Service
+@Slf4j
 public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
 
     @Autowired
@@ -60,6 +63,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
     @Autowired
     private OrderItemService orderItemService;
+
+    @Autowired
+    private OrderPayFeign orderPayFeign;
 
 
     /**
@@ -249,6 +255,25 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
     /**
+     * 根据订单号修改订单状态
+     * @param orderNumber
+     */
+    @Override
+    public void updateOrderStatus(String orderNumber) {
+        // 查看订单是否已支付
+        Boolean orderIsPay = queryOrderIsPay(orderNumber);
+        if (orderIsPay){
+            log.info("订单："+orderNumber+"已支付");
+            return;
+        }
+        Order order = Order.builder().orderNumber(orderNumber).status(2).isPayed(true).build();
+        int update = orderMapper.update(order, new LambdaQueryWrapper<Order>().eq(Order::getOrderNumber, orderNumber));
+        if (update == 0){
+            log.error("订单："+orderNumber+"支付失败");
+        }
+    }
+
+    /**
      * 监听订单超时未支付的死信队列，回滚库存
      * @param message
      * @param channel
@@ -259,27 +284,35 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
         String str = new String(message.getBody());
         OvertimeOrderDto overtimeOrderDto = JSON.parseObject(str, OvertimeOrderDto.class);
         String orderSn = overtimeOrderDto.getOrderSn();
-        // 查看订单是否已支付
+        // 查询数据库订单是否已支付
         Order order = orderMapper.selectOne(new LambdaQueryWrapper<Order>()
                 .eq(Order::getOrderNumber, orderSn)
         );
         if (!order.getIsPayed()){
-            // 回滚库存
-            StockChangeDto stockChangeDto = overtimeOrderDto.getStockChangeDto();
-            // 对数量乘以-1
-            List<DbStockChange> prodChanges = stockChangeDto.getProdChanges();
-            prodChanges.forEach(dbStockChange -> dbStockChange.setCount(dbStockChange.getCount() * -1));
-            List<DbStockChange> skuChanges = stockChangeDto.getSkuChanges();
-            skuChanges.forEach(dbStockChange -> dbStockChange.setCount(dbStockChange.getCount() * -1));
-            stockChangeDto.setProdChanges(prodChanges);
-            stockChangeDto.setSkuChanges(skuChanges);
-            // 远程调用修改库存
-            orderProdFeign.changeStack(stockChangeDto);
-            // 修改订单状态
-            order.setStatus(6);
-            order.setDeleteStatus(1);
-            orderMapper.updateById(order);
-            // 删除orderItem todo...
+
+            // 查询支付宝 该订单是否支付（异步延迟）
+            Boolean payStatus = orderPayFeign.queryPayStatus(orderSn);
+            if (!payStatus){
+                // 回滚数据库库存
+                StockChangeDto stockChangeDto = overtimeOrderDto.getStockChangeDto();
+                // 对数量乘以-1
+                List<DbStockChange> prodChanges = stockChangeDto.getProdChanges();
+                prodChanges.forEach(dbStockChange -> dbStockChange.setCount(dbStockChange.getCount() * -1));
+                List<DbStockChange> skuChanges = stockChangeDto.getSkuChanges();
+                skuChanges.forEach(dbStockChange -> dbStockChange.setCount(dbStockChange.getCount() * -1));
+                stockChangeDto.setProdChanges(prodChanges);
+                stockChangeDto.setSkuChanges(skuChanges);
+                // 远程调用修改库存
+                orderProdFeign.changeStack(stockChangeDto);
+                // 回滚es库存
+                stockChangeDto.setProdChanges(prodChanges);
+                changEsStock(stockChangeDto);
+                // 修改订单状态
+                order.setStatus(6);
+                order.setDeleteStatus(1);
+                order.setCloseType(1);
+                orderMapper.updateById(order);
+            }
         }
 
         try {

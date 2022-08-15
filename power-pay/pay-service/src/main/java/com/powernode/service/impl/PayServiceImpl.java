@@ -4,10 +4,13 @@ import com.alibaba.fastjson.JSONObject;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePayRequest;
 import com.alipay.api.request.AlipayTradePrecreateRequest;
+import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.alipay.api.response.AlipayTradePayResponse;
 import com.alipay.api.response.AlipayTradePrecreateResponse;
+import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.powernode.domain.Order;
 import com.powernode.domain.OrderPayDto;
 import com.powernode.feign.PayOrderFeign;
@@ -18,6 +21,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
+
+import java.util.Map;
 
 /**
  * 信息描述
@@ -89,7 +94,7 @@ public class PayServiceImpl implements PayService {
                 AlipayClient alipayClient = new DefaultAlipayClient(serverUrl, appId, privateKey, format,
                         charset, alipayPublicKey, signType);
                 AlipayTradePrecreateRequest request = new AlipayTradePrecreateRequest();
-                request.setNotifyUrl("");
+                request.setNotifyUrl("http://9y8xxx.natappfree.cc/p/order/payNotify");
                 JSONObject bizContent = new JSONObject();
                 bizContent.put("out_trade_no", order.getOrderNumber());
                 bizContent.put("total_amount", order.getActualTotal());
@@ -152,5 +157,61 @@ public class PayServiceImpl implements PayService {
                 break;
         }
         return null;
+    }
+
+    /**
+     * 获取支付宝支付通知
+     * @param map
+     * @return
+     */
+    @Override
+    public String payNotify(Map<String, String> map) {
+        // 验签
+        boolean verifySignResult = false;
+        try {
+            verifySignResult = AlipaySignature.certVerifyV1(map, alipayPublicKey, charset, signType);
+        } catch (AlipayApiException e) {
+            throw new RuntimeException(e);
+        }
+        if (verifySignResult){
+            // 获取支付结果
+            String tradeStatus = map.get("trade_status");
+            if (tradeStatus.equals("TRADE_SUCCESS")){
+                // 支付成功修改订单状态
+                // 获取订单号
+                String orderNumber = map.get("out_trade_no");
+                payOrderFeign.updateOrderStatus(orderNumber);
+                return "success";
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 查询支付结果
+     * @param orderNumber
+     * @return
+     */
+    @Override
+    public Boolean queryPayStatus(String orderNumber) {
+
+        AlipayClient alipayClient = new DefaultAlipayClient(serverUrl, appId, privateKey, format,
+                charset, alipayPublicKey, signType);
+        AlipayTradeQueryRequest request = new AlipayTradeQueryRequest();
+        request.setBizContent("{" +
+                "  \"out_trade_no\":\" "+orderNumber+" \"," +
+                "}");
+        AlipayTradeQueryResponse response = null;
+        try {
+            response = alipayClient.execute(request);
+        } catch (AlipayApiException e) {
+            throw new RuntimeException(e);
+        }
+        if(response.isSuccess()){
+            return (response.getTradeStatus().equals("TRADE_SUCCESS"));
+        } else {
+            System.out.println("调用失败");
+        }
+        return false;
     }
 }
